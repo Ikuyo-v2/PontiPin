@@ -45,7 +45,7 @@ class CafeController
 
         ];
 
-        return view('Cafe', [
+        return view('Home', [
             'title' => $title,
             'cafe' => $cafe,
         ]);
@@ -55,7 +55,7 @@ class CafeController
     {
         $title = 'PontiPin - Cafe Detail';
 
-        return view('cafe.show',
+        return view('Home.show',
             ['title' => $title]
         );
     }
@@ -64,7 +64,7 @@ class CafeController
     {
         $title = 'PontiPin - Create Cafe';
 
-        return view('cafe.create',
+        return view('Home.create',
             ['title' => $title]
         );
     }
@@ -73,7 +73,7 @@ class CafeController
     {
         $title = 'PontiPin - Edit Cafe';
 
-        return view('cafe.edit',
+        return view('Home.edit',
             ['title' => $title]
         );
     }
@@ -82,7 +82,7 @@ class CafeController
     {
         $title = 'PontiPin - Update Cafe';
 
-        return view('cafe.update',
+        return view('Home.update',
             ['title' => $title]
         );
     }
@@ -91,7 +91,7 @@ class CafeController
     {
         $title = 'PontiPin - Delete Cafe';
 
-        return view('cafe.destroy',
+        return view('Home.destroy',
             ['title' => $title]
         );
     }
