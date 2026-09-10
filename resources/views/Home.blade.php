@@ -95,10 +95,10 @@
 
     <div class="relative w-full h-[430px] hidden lg:block">
       <div class="absolute top-0 right-0 w-[92%] h-[380px] rounded-[28px] overflow-hidden shadow-lg ring-1 ring-ink/5">
-        <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?q=80&w=1200&auto=format&fit=crop" alt="Cafe interior with tiled wall and marble tables" class="w-full h-full object-cover">
+        <img src="./images/cafe1.webp" alt="Cafe interior with tiled wall and marble tables" class="w-full h-full object-cover">
       </div>
       <div class="absolute bottom-0 left-0 w-[190px] h-[190px] rounded-[22px] overflow-hidden shadow-xl ring-4 ring-cream">
-        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=800&auto=format&fit=crop" alt="Latte art coffee cup" class="w-full h-full object-cover">
+        <img src="./images/Cafe2.avif" alt="Latte art coffee cup" class="w-full h-full object-cover">
       </div>
     </div>
   </section>
