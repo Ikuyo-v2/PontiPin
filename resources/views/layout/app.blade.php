@@ -9,11 +9,11 @@
 </head>
 <body class="flex min-h-screen flex-col bg-[#FCFBF8] text-slate-800">
  
-    @include('partials.header')
+    @include('layout.partials.header')
  
     @yield('content')
  
-    @include('partials.footer')
+    @include('layout.partials.footer')
  
 </body>
 </html>
