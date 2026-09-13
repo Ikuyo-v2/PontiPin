@@ -1,28 +1,10 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Explore Cafes - KopiPontianak</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#FAF7F2] text-stone-800 min-h-screen">
+@extends('layout.app')
 
-  <header class="bg-[#FAF7F2] border-b border-stone-200 sticky top-0 z-10">
-    <div class="max-w-5xl mx-auto px-4 h-14 flex items-center justify-between">
-      <a href="#" class="font-bold text-lg flex items-center gap-2">
-        <span class="w-6 h-6 rounded-full bg-[#9A4126] text-white flex items-center justify-center text-xs">☕</span>
-        KopiPontianak
-      </a>
-      <div class="flex gap-4 text-sm font-medium">
-        <a href="#" class="text-stone-500 hover:text-black">Home</a>
-        <a href="#" class="text-[#9A4126] font-bold">Explore Cafes</a>
-      </div>
-      <span class="w-7 h-7 rounded-full bg-[#9A4126] text-white flex items-center justify-center text-xs font-bold">D</span>
-    </div>
-  </header>
+@section('title', $title)
 
-  <main class="max-w-5xl mx-auto px-4 py-6">
+@section('content')
+
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
     <div class="mb-5">
       <span class="text-[11px] font-bold text-[#9A4126]">PONTIANAK ONLY</span>
       <h1 class="text-2xl font-bold mt-1">Explore Cafes</h1>
@@ -118,12 +100,4 @@
     </div>
   </main>
 
-  <footer class="bg-[#2A1B14] text-stone-400 text-xs py-6 mt-12">
-    <div class="max-w-5xl mx-auto px-4 flex justify-between">
-      <p class="font-bold text-white">☕ KopiPontianak</p>
-      <p>Katalog Cafe Pontianak</p>
-    </div>
-  </footer>
-
-</body>
-</html>
+@endsection

@@ -1,59 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PontiPin — Discover Cafes in Pontianak</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="styles.css">
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          cream: '#F6F2E9',
-          sand: '#EFE7D8',
-          espresso: '#2B2016',
-          terracotta: '#C1603B',
-          ink: '#2E2A24',
-        },
-        fontFamily: {
-          serif: ['Fraunces', 'serif'],
-          sans: ['Inter', 'sans-serif'],
-        },
-      },
-    },
-  };
-</script>
-</head>
-<body class="bg-cream text-ink antialiased">
+@extends('layout.app')
 
-  <!-- Header -->
-  <header class="border-b border-ink/10 bg-cream">
-    <div class="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-10 py-4">
-      <div class="flex items-center gap-2.5">
-        <span class="flex items-center justify-center w-9 h-9 rounded-full bg-espresso text-cream">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M3 10h14v4a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-            <path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            <path d="M6 3c.5 1 .5 1.7 0 2.5M9.5 3c.5 1 .5 1.7 0 2.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-          </svg>
-        </span>
-        <span class="font-display text-xl text-ink">Ponti<span class="text-terracotta">Pin</span></span>
-      </div>
+@section('title', $title)
 
-      <nav class="hidden md:flex items-center gap-8 text-[15px] text-ink/70">
-        <a href="#" class="text-ink font-medium">Home</a>
-        <a href="#cafes" class="hover:text-ink transition-colors">Explore Cafes</a>
-      </nav>
-
-      <div class="flex items-center gap-2">
-        <span class="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white text-sm font-semibold">D</span>
-        <span class="text-sm text-ink/70">d</span>
-      </div>
-    </div>
-  </header>
-
+@section('content')
 
   <section class="max-w-7xl mx-auto px-6 lg:px-10 pt-16 pb-20 grid lg:grid-cols-2 gap-14 items-center">
     <div>
@@ -95,10 +44,10 @@
 
     <div class="relative w-full h-[430px] hidden lg:block">
       <div class="absolute top-0 right-0 w-[92%] h-[380px] rounded-[28px] overflow-hidden shadow-lg ring-1 ring-ink/5">
-        <img src="./images/cafe1.webp" alt="Cafe interior with tiled wall and marble tables" class="w-full h-full object-cover">
+        <img src="{{ asset('images/cafe1.webp') }}" alt="Cafe interior with tiled wall and marble tables" class="w-full h-full object-cover">
       </div>
       <div class="absolute bottom-0 left-0 w-[190px] h-[190px] rounded-[22px] overflow-hidden shadow-xl ring-4 ring-cream">
-        <img src="./images/Cafe2.avif" alt="Latte art coffee cup" class="w-full h-full object-cover">
+        <img src="{{ asset('images/cafe2.avif') }}" alt="Latte art coffee cup" class="w-full h-full object-cover">
       </div>
     </div>
   </section>
@@ -152,7 +101,7 @@
           <p class="text-terracotta text-[13px] font-semibold tracking-wide mb-3">Community favorites</p>
           <h2 class="font-display text-3xl md:text-4xl text-ink">Popular right now</h2>
         </div>
-        <a href="#" class="hidden sm:inline-flex items-center gap-1.5 text-terracotta text-[15px] font-medium hover:underline">
+        <a href="{{ route('ExploreCafe.index') }}" class="hidden sm:inline-flex items-center gap-1.5 text-terracotta text-[15px] font-medium hover:underline">
           View all
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -247,26 +196,4 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="bg-espresso text-cream/70">
-    <div class="max-w-7xl mx-auto px-6 lg:px-10 py-14 flex flex-col md:flex-row md:items-start md:justify-between gap-8">
-      <div class="max-w-sm">
-        <div class="flex items-center gap-2.5 mb-4">
-          <span class="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M3 10h14v4a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4v-4Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
-              <path d="M17 11h1.5a2.5 2.5 0 0 1 0 5H17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <span class="font-display text-lg text-cream">PontiPin</span>
-        </div>
-        <p class="text-[14px] leading-relaxed">
-          A digital catalog of cafes across Pontianak, West Kalimantan. Discover, explore, and sip your way through the equator city.
-        </p>
-      </div>
-      <p class="text-[13px] text-cream/50 md:pt-1">Currently covering Pontianak only · Built with coffee</p>
-    </div>
-  </footer>
-
-</body>
-</html>
+@endsection

@@ -123,14 +123,9 @@
         <div class="bg-white rounded-2xl p-5 shadow-sm">
             <h3 class="font-display text-lg font-semibold mb-4">Location</h3>
             <div class="rounded-xl overflow-hidden mb-4 relative">
-                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?q=80&w=600&auto=format&fit=crop" class="w-full h-40 object-cover" alt="Map preview" />
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="text-3xl drop-shadow">📍</span>
-                </div>
+                        <img src="images/Map.png" class="w-full h-40 object-cover" alt="Map preview" />
             </div>
-            <p class="text-sm text-ink/70 flex items-start gap-1.5 mb-4">
-                <span class="text-rust mt-0.5">📍</span> Jl. HOS Cokroaminoto No. 5, Pontianak
-            </p>
+
             <button class="w-full bg-rust hover:bg-rustdark transition-colors text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2">
                 <span>➤</span> Get Directions
             </button>

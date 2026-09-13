@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class CafeController
+class HomeController
 {
     public function index()
     {
