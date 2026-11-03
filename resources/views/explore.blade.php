@@ -4,97 +4,122 @@
 
 @section('content')
 
-  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
-    <div class="mb-5">
-      <span class="text-[11px] font-bold text-[#9A4126]">PONTIANAK ONLY</span>
-      <h1 class="text-2xl font-bold mt-1">Explore Cafes</h1>
-      <p class="text-xs text-stone-500">Daftar cafe pilihan di sekitar Kota Pontianak.</p>
-    </div>
+  <main class="bg-cream min-h-screen">
+    <div class="max-w-7xl mx-auto px-6 lg:px-10 pt-14 pb-20">
+      
+      <!-- Header Section -->
+      <div class="mb-8">
+        <p class="flex items-center gap-1.5 text-terracotta text-[13px] font-semibold tracking-wide mb-3">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" stroke="currentColor" stroke-width="1.7"/>
+            <circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.7"/>
+          </svg>
+          PONTIANAK ONLY
+        </p>
+        <h1 class="font-display text-4xl md:text-5xl text-ink mb-3">Explore Cafes</h1>
+        <p class="text-ink/65 text-[16px] max-w-xl">
+          Daftar cafe pilihan di sekitar Kota Pontianak. Cari menu, harga, dan temukan tempat ngopi terbaik favoritmu.
+        </p>
+      </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-3">
-      <input type="text" placeholder="Cari cafe..." class="bg-white border border-stone-300 text-xs px-3 py-2 rounded-lg outline-none">
-      <select class="bg-white border border-stone-300 text-xs px-2 py-2 rounded-lg outline-none text-stone-600">
-        <option>Semua Wilayah</option>
-        <option>Pontianak Kota</option>
-        <option>Pontianak Selatan</option>
-      </select>
-      <select class="bg-white border border-stone-300 text-xs px-2 py-2 rounded-lg outline-none text-stone-600">
-        <option>Paling Populer</option>
-        <option>Rating Tertinggi</option>
-      </select>
-    </div>
+      <!-- Search & Filter Controls -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mb-6">
+        <div class="relative flex items-center bg-white rounded-full px-4 py-2.5 ring-1 ring-ink/10 shadow-sm">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" class="text-ink/40 shrink-0 mr-2.5" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/>
+            <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Cari cafe..." class="w-full bg-transparent outline-none text-[15px] placeholder:text-ink/40 text-ink">
+        </div>
 
-    <div class="flex flex-wrap gap-2 text-xs mb-6">
-      <button class="px-3 py-1 rounded-full bg-[#9A4126] text-white font-medium">Semua</button>
-      <button class="px-3 py-1 rounded-full bg-white border border-stone-300 text-stone-600">Coffee Shop</button>
-      <button class="px-3 py-1 rounded-full bg-white border border-stone-300 text-stone-600">Co-working</button>
-      <button class="px-3 py-1 rounded-full bg-white border border-stone-300 text-stone-600">Outdoor</button>
-      <button class="px-3 py-1 rounded-full bg-white border border-stone-300 text-stone-600">Affordable</button>
-    </div>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-
-      <div class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
-        <div>
-          <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=500" class="h-36 w-full object-cover" alt="Kopi Aming">
-          <div class="p-3">
-            <div class="flex justify-between items-start mb-1">
-              <h2 class="font-bold text-sm">Kedai Kopi Aming</h2>
-              <span class="text-xs text-amber-500 font-semibold">★ 4.8</span>
-            </div>
-            <p class="text-stone-500 text-xs line-clamp-2">Kopi legendaris khas Pontianak dengan robusta pekat dan harga terjangkau.</p>
-            <div class="flex gap-1 mt-2 text-[10px]">
-              <span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Coffee Shop</span>
-              <span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Affordable</span>
-            </div>
+        <div class="relative">
+          <select class="w-full bg-white rounded-full px-5 py-3 text-[15px] text-ink/80 ring-1 ring-ink/10 shadow-sm outline-none appearance-none cursor-pointer">
+            <option value="">Semua Wilayah</option>
+            <option value="pontianak-kota">Pontianak Kota</option>
+            <option value="pontianak-selatan">Pontianak Selatan</option>
+            <option value="pontianak-barat">Pontianak Barat</option>
+            <option value="pontianak-timur">Pontianak Timur</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-ink/40">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
           </div>
         </div>
-        <div class="p-3 border-t border-stone-100 flex justify-between items-center text-xs">
-          <span class="text-stone-400">Pontianak Kota</span>
-          <a href="#" class="text-[#9A4126] font-bold hover:underline">Detail →</a>
+
+        <div class="relative">
+          <select class="w-full bg-white rounded-full px-5 py-3 text-[15px] text-ink/80 ring-1 ring-ink/10 shadow-sm outline-none appearance-none cursor-pointer">
+            <option value="populer">Paling Populer</option>
+            <option value="rating">Rating Tertinggi</option>
+            <option value="abjad">Nama (A-Z)</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-ink/40">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+          </div>
         </div>
       </div>
 
-      <div class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
-        <div>
-          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=500" class="h-36 w-full object-cover" alt="Kopi Khatulistiwa">
-          <div class="p-3">
-            <div class="flex justify-between items-start mb-1">
-              <h2 class="font-bold text-sm">Kopi Khatulistiwa</h2>
-              <span class="text-xs text-amber-500 font-semibold">★ 4.7</span>
-            </div>
-            <p class="text-stone-500 text-xs line-clamp-2">Specialty coffee house bernuansa hangat dekat ikon Tugu Khatulistiwa.</p>
-            <div class="flex gap-1 mt-2 text-[10px]">
-              <span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Coffee Shop</span>
-              <span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Work-Friendly</span>
-            </div>
-          </div>
-        </div>
-        <div class="p-3 border-t border-stone-100 flex justify-between items-center text-xs">
-          <span class="text-stone-400">Pontianak Kota</span>
-          <a href="#" class="text-[#9A4126] font-bold hover:underline">Detail →</a>
-        </div>
+      <!-- Category Filter Pills -->
+      <div class="flex flex-wrap gap-2.5 mb-10">
+        <button class="bg-terracotta text-white font-medium rounded-full px-5 py-2 text-[14px] transition shadow-sm">Semua</button>
+        <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Coffee Shop</button>
+        <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Co-working Cafe</button>
+        <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Study-Friendly</button>
+        <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Outdoor Cafe</button>
+        <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Instagrammable</button>
+        <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Affordable Cafe</button>
       </div>
 
-      <div class="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-sm flex flex-col justify-between">
-        <div>
-          <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=500" class="h-36 w-full object-cover" alt="Ruang Seduh">
-          <div class="p-3">
-            <div class="flex justify-between items-start mb-1">
-              <h2 class="font-bold text-sm">Ruang Seduh</h2>
-              <span class="text-xs text-amber-500 font-semibold">★ 4.6</span>
+      <!-- Dynamic Cards Grid -->
+      <div class="grid md:grid-cols-3 gap-6">
+
+        @forelse ($cafe as $item)
+          <article class="bg-white rounded-2xl overflow-hidden ring-1 ring-ink/5 shadow-sm flex flex-col justify-between transition hover:shadow-md">
+            <div>
+              <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="w-full h-48 object-cover">
+              
+              <div class="p-5">
+                <div class="flex items-center justify-between mb-2">
+                  <h3 class="font-display text-xl text-ink">{{ $item['name'] }}</h3>
+                  <span class="flex items-center gap-1 text-[13px] font-semibold text-ink bg-amber-50 rounded-full px-2.5 py-1 shrink-0">
+                    <span class="text-amber-500">★</span> {{ number_format($item['rating'], 1) }}
+                  </span>
+                </div>
+
+                <p class="text-ink/60 text-[14px] leading-relaxed mb-4 line-clamp-2">
+                  {{ $item['description'] ?? $item['subtitle'] }}
+                </p>
+
+                @if (!empty($item['tags']))
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    @php
+                      $tags = is_array($item['tags']) ? $item['tags'] : explode(',', $item['tags']);
+                    @endphp
+                    @foreach ($tags as $tag)
+                      <span class="text-[13px] bg-sand text-ink/70 rounded-full px-3 py-1">{{ trim($tag) }}</span>
+                    @endforeach
+                  </div>
+                @endif
+              </div>
             </div>
-            <p class="text-stone-500 text-xs line-clamp-2">Cafe minimalis nyaman dengan banyak stopkontak untuk kerja dan nugas.</p>
-            <div class="flex gap-1 mt-2 text-[10px]">
-              <span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Co-working</span>
-              <span class="bg-stone-100 text-stone-600 px-2 py-0.5 rounded">Quiet Zone</span>
+
+            <div class="p-5 pt-4 border-t border-ink/10 flex items-center justify-between">
+              <span class="flex items-center gap-1 text-[13px] text-ink/55">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 21s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12Z" stroke="currentColor" stroke-width="1.7"/>
+                  <circle cx="12" cy="9" r="2.4" stroke="currentColor" stroke-width="1.7"/>
+                </svg>
+                {{ $item['location'] }}
+              </span>
+              <a href="{{ url('/explore/' . $item['id']) }}" class="text-terracotta text-[13px] font-medium inline-flex items-center gap-1 hover:underline">
+                View Details →
+              </a>
             </div>
+          </article>
+        @empty
+          <div class="col-span-full bg-white rounded-2xl ring-1 ring-ink/5 p-12 text-center text-ink/50 text-[15px]">
+            Tidak ada cafe yang sesuai dengan pencarian.
           </div>
-        </div>
-        <div class="p-3 border-t border-stone-100 flex justify-between items-center text-xs">
-          <span class="text-stone-400">Pontianak Selatan</span>
-          <a href="#" class="text-[#9A4126] font-bold hover:underline">Detail →</a>
-        </div>
+        @endforelse
+
       </div>
 
     </div>
