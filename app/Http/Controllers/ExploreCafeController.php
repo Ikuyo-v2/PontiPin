@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ExploreCafeController
+class ExploreCafeController extends Controller
 {
     public function index()
     {

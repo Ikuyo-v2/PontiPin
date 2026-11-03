@@ -3,8 +3,8 @@
             <img src="images/PontiPin.png" alt="PontiPin Logo" class="h-10 w-auto object-contain md:h-12">
 
           <nav class="hidden md:flex items-center gap-8 text-[15px] text-ink/70">
-              <a href="#" class="text-ink font-medium">Home</a>
-              <a href="#cafes" class="hover:text-ink transition-colors">Explore Cafes</a>
+              <a href="{{ route('home.index') }}" class="text-ink font-medium">Home</a>
+              <a href="{{ route('explore-cafe.index') }}" class="hover:text-ink transition-colors">Explore Cafes</a>
           </nav>
 
           <div class="flex items-center gap-2">
