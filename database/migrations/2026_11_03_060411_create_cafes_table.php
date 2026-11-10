@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->string('name');
             $table->string('location');
-            $table->decimal('rating', 3, 1)->default(0.0);
+            $table->integer('rating')->unsigned()->default(0);
             $table->string('tags')->nullable();
             $table->string('image')->nullable();
             $table->string('subtitle')->nullable();
