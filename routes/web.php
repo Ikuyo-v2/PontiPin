@@ -5,6 +5,9 @@ use App\Http\Controllers\ExploreCafeController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
+Route::view('/login', 'auth')->name('login');
+Route::view('/register', 'auth')->name('register');
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::name('home.')->prefix('home')->group(function () {

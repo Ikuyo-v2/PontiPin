@@ -7,7 +7,7 @@
  
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="flex min-h-screen flex-col bg-[#FCFBF8] text-slate-800">
+<body class="flex min-h-screen flex-col bg-[#FCFBF8] text-slate-800 @yield('body-class')">
  
     @include('layout.partials.header')
  
