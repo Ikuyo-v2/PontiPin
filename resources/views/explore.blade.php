@@ -69,7 +69,7 @@
         <button class="bg-white hover:bg-sand text-ink/80 rounded-full px-5 py-2 text-[14px] ring-1 ring-ink/10 hover:ring-terracotta/40 transition">Affordable Cafe</button>
       </div>
 
-      <!-- Cafe Cards Grid (Header & Footer Card Sama Persis dengan Home) -->
+      <!-- Cafe Cards Grid -->
       <div class="grid md:grid-cols-3 gap-6">
 
         @forelse ($cafe as $item)
@@ -105,7 +105,7 @@
               </div>
             </div>
 
-            <!-- Card Footer (Sama persis dengan Home) -->
+            <!-- Card Footer -->
             <div class="p-5 pt-4 border-t border-ink/10 flex items-center justify-between">
               <span class="flex items-center gap-1 text-[13px] text-ink/55">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
