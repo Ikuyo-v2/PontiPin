@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Contracts\View\View;
+
 class ExploreCafeController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $title = 'PontiPin - Cafe Catalog';
         // Temporary data of cafe
@@ -51,7 +53,7 @@ class ExploreCafeController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(int $id): View
     {
         $title = 'PontiPin - Cafe Detail';
 
@@ -60,7 +62,7 @@ class ExploreCafeController extends Controller
         );
     }
 
-    public function create()
+    public function create(): View
     {
         $title = 'PontiPin - Create Cafe';
 
@@ -69,7 +71,7 @@ class ExploreCafeController extends Controller
         );
     }
 
-    public function edit($id)
+    public function edit(int $id): View
     {
         $title = 'PontiPin - Edit Cafe';
 
@@ -78,7 +80,7 @@ class ExploreCafeController extends Controller
         );
     }
 
-    public function update($id)
+    public function update(int $id): View
     {
         $title = 'PontiPin - Update Cafe';
 
@@ -87,7 +89,7 @@ class ExploreCafeController extends Controller
         );
     }
 
-    public function destroy($id)
+    public function destroy(int $id): View
     {
         $title = 'PontiPin - Delete Cafe';
 
