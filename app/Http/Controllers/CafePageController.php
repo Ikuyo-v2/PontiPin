@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class CafePageController
+class CafePageController extends Controller
 {
     public function index()
     {
@@ -45,7 +45,7 @@ class CafePageController
 
         ];
 
-        return view('CafePage', [
+        return view('cafe-page', [
             'title' => $title,
             'cafe' => $cafe,
         ]);
@@ -55,7 +55,7 @@ class CafePageController
     {
         $title = 'PontiPin - Cafe Detail';
 
-        return view('CafePage.show',
+        return view('cafe-page.show',
             ['title' => $title]
         );
     }
@@ -64,7 +64,7 @@ class CafePageController
     {
         $title = 'PontiPin - Create Cafe';
 
-        return view('CafePage.create',
+        return view('cafe-page.create',
             ['title' => $title]
         );
     }
@@ -73,7 +73,7 @@ class CafePageController
     {
         $title = 'PontiPin - Edit Cafe';
 
-        return view('CafePage.edit',
+        return view('cafe-page.edit',
             ['title' => $title]
         );
     }
@@ -82,7 +82,7 @@ class CafePageController
     {
         $title = 'PontiPin - Update Cafe';
 
-        return view('CafePage.update',
+        return view('cafe-page.update',
             ['title' => $title]
         );
     }
@@ -91,7 +91,7 @@ class CafePageController
     {
         $title = 'PontiPin - Delete Cafe';
 
-        return view('CafePage.destroy',
+        return view('cafe-page.destroy',
             ['title' => $title]
         );
     }
