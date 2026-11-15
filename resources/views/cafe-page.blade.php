@@ -1,8 +1,8 @@
 @extends('layout.app')
-
 @section('title', $title)
-
 @section('content')
+
+
 <main class="max-w-6xl mx-auto px-6 md:px-10 py-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
 
     <div class="lg:col-span-2 space-y-12">
@@ -120,15 +120,10 @@
     </div>
 
     <aside class="space-y-6">
-        <div class="bg-white rounded-2xl p-5 shadow-sm">
-            <h3 class="font-display text-lg font-semibold mb-4">Location</h3>
-            <div class="rounded-xl overflow-hidden mb-4 relative">
-                        <img src="images/Map.png" class="w-full h-40 object-cover" alt="Map preview" />
-            </div>
-
-            <button class="w-full bg-rust hover:bg-rustdark transition-colors text-white text-sm font-semibold py-2.5 rounded-full flex items-center justify-center gap-2">
-                <span>➤</span> Get Directions
-            </button>
+        <div id="cafe-map" class="w-full h-48 rounded-xl overflow-hidden z-0"
+            data-lat="{{ $cafe['latitude'] ?? -0.0263 }}"
+            data-lng="{{ $cafe['longitude'] ?? 109.3425 }}"
+            data-name="{{ $cafe['name'] ?? 'Cafe Location' }}">
         </div>
 
         <div class="bg-white rounded-2xl p-5 shadow-sm">

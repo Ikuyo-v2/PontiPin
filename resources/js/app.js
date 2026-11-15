@@ -1,3 +1,31 @@
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix Vite marker icon issue (standard Leaflet bug in bundlers)
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+    iconRetinaUrl: markerIcon2x,
+    iconUrl: markerIcon,
+    shadowUrl: markerShadow,
+});
+
+// Single Cafe Map
+const el = document.getElementById('cafe-map');
+if (el) {
+    const { lat, lng, name } = el.dataset;
+    const map = L.map(el).setView([lat, lng], 16);
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors',
+    }).addTo(map);
+
+    L.marker([lat, lng]).addTo(map).bindPopup(`<b>${name}</b>`).openPopup();
+}
+
 const authCard = document.querySelector('[data-auth-card]');
 
 if (authCard) {
