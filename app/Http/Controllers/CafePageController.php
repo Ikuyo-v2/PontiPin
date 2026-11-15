@@ -4,52 +4,36 @@ namespace App\Http\Controllers;
 
 class CafePageController extends Controller
 {
-    public function index()
-    {
-        $title = 'PontiPin - Cafe Catalog';
-        // Temporary data of cafe
-        $cafe = [
-            [
-                'name' => 'Kopi Kenangan',
-                'id' => 1,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/kopi-kenangan.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Kenangan adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan kopi dan makanan ringan, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
-            [
-                'name' => 'Kopi Khatulistiwa',
-                'id' => 2,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/kopi-khatulistiwa.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Khatulistiwa adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan kopi dan makanan ringan, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
-            [
-                'name' => 'Warung Upnormal',
-                'id' => 3,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/warung-upnormal.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Warung Upnormal adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan makanan dan minuman, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
+// app/Http/Controllers/CafePageController.php
 
-        ];
+public function index()
+{
+    $title = 'PontiPin - Cafe Catalog';
 
-        return view('cafe-page', [
-            'title' => $title,
-            'cafe' => $cafe,
-        ]);
-    }
+    $cafe = [
+        [
+            'id' => 1,
+            'name' => 'Kedai Kopi Aming',
+            'location' => 'Jl. Gajahmada',
+            'latitude' => -0.0278,
+            'longitude' => 109.3442,
+            'rating' => 4.8,
+            'tags' => 'Coffee Shop, Affordable',
+            'image' => 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=900',
+            'subtitle' => 'Legendary Pontianak coffee',
+            'description' => 'Legendary old-school Pontianak coffee stall serving robusta.',
+        ],
+        // ...
+    ];
+
+    // Pick the first cafe to display on this page
+    $selectedCafe = $cafe[0];
+
+    return view('cafe-page', [
+        'title' => $title,
+        'cafe' => $selectedCafe,
+    ]);
+}
 
     public function show($id)
     {
