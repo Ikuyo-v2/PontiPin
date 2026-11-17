@@ -16,8 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('cafe_id');
             $table->text('review');
-            $table->integer('rating')->unsigned();
+            $table->decimal('rating', 2, 1)->unsigned();
             $table->timestamps();
+            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('cafe_id')->constrained()->cascadeOnDelete();
         });
     }
 

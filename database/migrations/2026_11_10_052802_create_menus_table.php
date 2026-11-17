@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->integer('price')->unsigned();
+            $table->decimal('price', 10, 2)->unsigned();
+            $table->string('category')->nullable();
+            $table->string('image')->nullable();
             $table->unsignedBigInteger('cafe_id');
+            $table->foreignId('cafe_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

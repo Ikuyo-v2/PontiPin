@@ -13,7 +13,9 @@ return new class extends Migration {
             $table->string('name');
             $table->string('location');
             $table->string('coordinates')->nullable();
-            $table->integer('rating')->unsigned()->default(0);
+            $table->string('address')->nullable();
+            $table->string('opening_hour')->nullable();
+            $table->decimal('rating', 2, 1)->unsigned()->default(0);
             $table->string('tags')->nullable();
             $table->string('image')->nullable();
             $table->string('subtitle')->nullable();
