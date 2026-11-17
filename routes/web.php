@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminPageController;
 use App\Http\Controllers\CafePageController;
 use App\Http\Controllers\ExploreCafeController;
 use App\Http\Controllers\HomeController;
@@ -9,6 +10,7 @@ Route::view('/login', 'auth')->name('login');
 Route::view('/register', 'auth')->name('register');
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/admin-page', [AdminPageController::class, 'index'])->name('admin-page.index');
 
 Route::name('home.')->prefix('home')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
