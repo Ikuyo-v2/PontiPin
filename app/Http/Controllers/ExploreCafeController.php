@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Contracts\View\View;
 
-class ExploreCafeController extends Controller
+class ExploreCafeController
 {
     public function index(): View
     {

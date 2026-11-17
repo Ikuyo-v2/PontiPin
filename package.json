@@ -17,6 +17,6 @@
         "@laravel/multiplex": "^0.4.1"
     },
     "dependencies": {
-        "@tailwindcss/cli": "^4.3.3"
+        "@tailwindcss/cli": "^4.3.0"
     }
 }
