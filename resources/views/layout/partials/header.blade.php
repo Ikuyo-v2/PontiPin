@@ -8,8 +8,8 @@
           </nav>
 
           <div class="flex items-center gap-2">
-              <span
-                  class="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white text-sm font-semibold">D</span>
+              <a href="{{ route('admin-page.index') }}"
+                  class="flex items-center justify-center w-8 h-8 rounded-full bg-terracotta text-white text-sm font-semibold">D</a>
               <span class="text-sm text-ink/70">d</span>
           </div>
       </div>
