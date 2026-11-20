@@ -2,52 +2,63 @@
 
 namespace App\Http\Controllers;
 
-class CafePageController
+use App\Models\Cafe;
+
+class CafePageController extends Controller
 {
+    // app/Http/Controllers/CafePageController.php
+
     public function index()
     {
         $title = 'PontiPin - Cafe Catalog';
-        // Temporary data of cafe
-        $cafe = [
-            [
-                'name' => 'Kopi Kenangan',
-                'id' => 1,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/kopi-kenangan.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Kenangan adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan kopi dan makanan ringan, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
-            [
-                'name' => 'Kopi Khatulistiwa',
-                'id' => 2,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/kopi-khatulistiwa.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Khatulistiwa adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan kopi dan makanan ringan, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
-            [
-                'name' => 'Warung Upnormal',
-                'id' => 3,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/warung-upnormal.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Warung Upnormal adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan makanan dan minuman, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
+        $selectedCafe = null;
+        $menus = collect();
 
-        ];
+        try {
+            $selectedCafe = Cafe::query()->first();
+            $menus = $selectedCafe?->menus()->get() ?? collect();
+        } catch (\Throwable) {
+            $selectedCafe = null;
+            $menus = collect();
+        }
 
-        return view('CafePage', [
+        if ($menus->isEmpty()) {
+            $menus = collect([
+                [
+                    'name' => 'Kopi O Panas',
+                    'category' => 'Coffee',
+                    'price' => 8000,
+                    'image' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Classic black robusta, brewed the old way.',
+                ],
+                [
+                    'name' => 'Kopi Susu Aming',
+                    'category' => 'Coffee',
+                    'price' => 10000,
+                    'image' => 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Robusta with condensed milk, sweet and strong.',
+                ],
+                [
+                    'name' => 'Roti Srikaya',
+                    'category' => 'Snacks',
+                    'price' => 12000,
+                    'image' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Toasted bread with homemade kaya jam.',
+                ],
+                [
+                    'name' => 'Teh Obeng',
+                    'category' => 'Tea',
+                    'price' => 6000,
+                    'image' => 'https://images.unsplash.com/photo-1499638673689-79a0b5115d87?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Iced sweet tea, Pontianak style.',
+                ],
+            ]);
+        }
+
+        return view('cafe-page', [
             'title' => $title,
-            'cafe' => $cafe,
+            'cafe' => $selectedCafe?->toArray(),
+            'menus' => $menus,
         ]);
     }
 
@@ -55,7 +66,7 @@ class CafePageController
     {
         $title = 'PontiPin - Cafe Detail';
 
-        return view('CafePage.show',
+        return view('cafe-page.show',
             ['title' => $title]
         );
     }
@@ -64,7 +75,7 @@ class CafePageController
     {
         $title = 'PontiPin - Create Cafe';
 
-        return view('CafePage.create',
+        return view('cafe-page.create',
             ['title' => $title]
         );
     }
@@ -73,7 +84,7 @@ class CafePageController
     {
         $title = 'PontiPin - Edit Cafe';
 
-        return view('CafePage.edit',
+        return view('cafe-page.edit',
             ['title' => $title]
         );
     }
@@ -82,7 +93,7 @@ class CafePageController
     {
         $title = 'PontiPin - Update Cafe';
 
-        return view('CafePage.update',
+        return view('cafe-page.update',
             ['title' => $title]
         );
     }
@@ -91,7 +102,7 @@ class CafePageController
     {
         $title = 'PontiPin - Delete Cafe';
 
-        return view('CafePage.destroy',
+        return view('cafe-page.destroy',
             ['title' => $title]
         );
     }

@@ -101,7 +101,7 @@
           <p class="text-terracotta text-[13px] font-semibold tracking-wide mb-3">Community favorites</p>
           <h2 class="font-display text-3xl md:text-4xl text-ink">Popular right now</h2>
         </div>
-        <a href="{{ route('ExploreCafe.index') }}" class="hidden sm:inline-flex items-center gap-1.5 text-terracotta text-[15px] font-medium hover:underline">
+        <a href="{{ route('explore-cafe.index') }}" class="hidden sm:inline-flex items-center gap-1.5 text-terracotta text-[15px] font-medium hover:underline">
           View all
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
