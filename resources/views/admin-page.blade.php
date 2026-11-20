@@ -20,9 +20,24 @@
         </header>
 
         <section aria-label="Dashboard statistics" class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+            {{-- Total cafes (Group 59.svg) --}}
             <article class="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/10 sm:p-6">
-                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand">
-                    <img class="size-7" src="{{ asset('images/icons/cup.svg') }}" alt="">
+                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand text-[#3A281C]">
+                    <svg class="size-8" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                        <defs>
+                            <mask id="icon-cup-mask">
+                                <rect width="64" height="64" fill="white"/>
+                                <ellipse cx="30" cy="25.5" rx="13" ry="2.2" fill="black"/>
+                                <path d="M14.5 42.5c2.8 5.2 8.6 8.5 15.5 8.5s12.7-3.3 15.5-8.5" stroke="black" stroke-width="3.2" stroke-linecap="round"/>
+                            </mask>
+                        </defs>
+                        <path d="M24.5 19.5c0-2.2 2-3.2 2-5.5s-2-3.3-2-5.5M30.5 18c0-2.2 2-3.2 2-5.5s-2-3.3-2-5.5M36.5 19.5c0-2.2 2-3.2 2-5.5s-2-3.3-2-5.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        <g mask="url(#icon-cup-mask)" fill="currentColor">
+                            <ellipse cx="30" cy="49.5" rx="20.5" ry="6.5"/>
+                            <path d="M13 25.5C13 23.8 20.6 22.5 30 22.5s17 1.3 17 3c0 13.5-7.2 23.5-17 23.5S13 39 13 25.5Z"/>
+                            <path d="M45.5 28.5h2.2c4 0 7.3 3.1 7.3 7s-3.3 7-7.3 7h-3.2v-3.6h3c2 0 3.6-1.5 3.6-3.4s-1.6-3.4-3.6-3.4h-2v-3.6Z"/>
+                        </g>
+                    </svg>
                 </div>
                 <div class="min-w-0">
                     <h2 class="text-sm font-medium text-ink/60">Total cafes</h2>
@@ -30,9 +45,17 @@
                 </div>
             </article>
 
+            {{-- Average rating (Group 57.svg) --}}
             <article class="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/10 sm:p-6">
-                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand">
-                    <img class="size-7" src="{{ asset('images/icons/stars.svg') }}" alt="">
+                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand text-[#3A281C]">
+                    <svg class="size-8" viewBox="0 0 64 64" fill="currentColor" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+                        {{-- Center star --}}
+                        <polygon points="32,16 35.3,24.5 44.4,25 37.3,30.7 39.6,39.5 32,34.6 24.4,39.5 26.7,30.7 19.6,25 28.7,24.5"/>
+                        {{-- Left star --}}
+                        <polygon points="13,29.8 15.1,35.1 20.8,35.5 16.4,39.1 17.8,44.6 13,41.6 8.2,44.6 9.6,39.1 5.2,35.5 10.9,35.1"/>
+                        {{-- Right star --}}
+                        <polygon points="51,29.8 53.1,35.1 58.8,35.5 54.4,39.1 55.8,44.6 51,41.6 46.2,44.6 47.6,39.1 43.2,35.5 48.9,35.1"/>
+                    </svg>
                 </div>
                 <div class="min-w-0">
                     <h2 class="text-sm font-medium text-ink/60">Average rating</h2>
@@ -40,9 +63,27 @@
                 </div>
             </article>
 
+            {{-- Cafes to moderate (Group 60.svg) --}}
             <article class="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/10 sm:p-6">
-                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand">
-                    <img class="size-7" src="{{ asset('images/icons/cup-warning.svg') }}" alt="">
+                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand text-[#3A281C]">
+                    <svg class="size-8" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                        <defs>
+                            <mask id="icon-cup-warning-mask">
+                                <rect width="64" height="64" fill="white"/>
+                                <ellipse cx="26" cy="28" rx="11.5" ry="2" fill="black"/>
+                                <path d="M12 43.5c2.5 4.8 7.8 7.8 14 7.8s11.5-3 14-7.8" stroke="black" stroke-width="3" stroke-linecap="round"/>
+                                <path d="M43 9.5L58.5 36.5H27.5L43 9.5Z" fill="black" stroke="black" stroke-width="6" stroke-linejoin="round"/>
+                            </mask>
+                        </defs>
+                        <g mask="url(#icon-cup-warning-mask)" fill="currentColor">
+                            <ellipse cx="26" cy="50" rx="18.5" ry="5.8"/>
+                            <path d="M10.5 28c0-1.5 6.9-2.7 15.5-2.7s15.5 1.2 15.5 2.7c0 12.2-6.5 21.2-15.5 21.2S10.5 40.2 10.5 28Z"/>
+                            <path d="M40 31h2c3.6 0 6.5 2.8 6.5 6.3s-2.9 6.3-6.5 6.3h-2.8v-3.2h2.6c1.8 0 3.2-1.4 3.2-3.1s-1.4-3.1-3.2-3.1h-1.8V31Z"/>
+                        </g>
+                        <path d="M43 11L57.5 36H28.5L43 11Z" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/>
+                        <path d="M43 19.5v8" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                        <circle cx="43" cy="31.8" r="1.8" fill="currentColor"/>
+                    </svg>
                 </div>
                 <div class="min-w-0">
                     <h2 class="text-sm font-medium text-ink/60">Cafes to moderate</h2>
@@ -50,9 +91,16 @@
                 </div>
             </article>
 
+            {{-- Reviews to moderate (Group 58.svg) --}}
             <article class="flex items-center gap-4 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-ink/10 sm:p-6">
-                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand">
-                    <img class="size-7" src="{{ asset('images/icons/chat-warning.svg') }}" alt="">
+                <div class="grid size-14 shrink-0 place-items-center rounded-xl bg-sand text-[#3A281C]">
+                    <svg class="size-8" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+                        <path d="M35.5 20H16a5 5 0 0 0-5 5v29l7.5-6H41a5 5 0 0 0 5-5v-7.5" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M17.5 28.5h14M17.5 34.5h20.5M17.5 40.5h20" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                        <path d="M45.5 10L59 33.5H32L45.5 10Z" stroke="currentColor" stroke-width="3.2" stroke-linejoin="round"/>
+                        <path d="M45.5 18v7.2" stroke="currentColor" stroke-width="3.2" stroke-linecap="round"/>
+                        <circle cx="45.5" cy="29.3" r="1.7" fill="currentColor"/>
+                    </svg>
                 </div>
                 <div class="min-w-0">
                     <h2 class="text-sm font-medium text-ink/60">Reviews to moderate</h2>
