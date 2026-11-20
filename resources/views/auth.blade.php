@@ -4,7 +4,7 @@
 @section('body-class', 'auth-page')
 
 @section('content')
-    @php($isRegister = request()->routeIs('register'))
+    @php($isRegister = request()->routeIs('register') || old('_form') === 'register' || $errors->has('name') || $errors->has('password_confirmation'))
     <main class="auth-main">
         <div
             class="auth-card{{ $isRegister ? ' is-register' : '' }}"
@@ -16,10 +16,14 @@
             <section class="auth-form-panel" aria-label="Account access">
                 <form
                     class="auth-form auth-form--login"
+                    method="POST"
+                    action="{{ route('login') }}"
                     data-auth-panel="login"
                     aria-hidden="{{ $isRegister ? 'true' : 'false' }}"
                     @if ($isRegister) inert @endif
                 >
+                    @csrf
+                    <input type="hidden" name="_form" value="login">
                     <h1>Welcome Back</h1>
                     <p class="auth-intro">Welcome back! Please log in to your account to begin.</p>
 
@@ -35,6 +39,9 @@
                                 value="{{ old('email') }}"
                                 required
                             >
+                            @error('email')
+                                <p class="text-xs text-red-600 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="auth-field">
@@ -47,18 +54,21 @@
                                 placeholder="Please enter your password"
                                 required
                             >
+                            @error('password')
+                                <p class="text-xs text-red-600 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="auth-options">
                         <label class="auth-remember" for="login-remember">
-                            <input id="login-remember" name="remember" type="checkbox">
+                            <input id="login-remember" name="remember" type="checkbox" value="1">
                             <span>Remember me</span>
                         </label>
                         <span class="auth-forgot">Forgot password?</span>
                     </div>
 
-                    <button class="auth-submit" type="button">Sign in</button>
+                    <button class="auth-submit" type="submit">Sign in</button>
                     <p class="auth-switch">
                         Don’t have an account?
                         <a href="{{ route('register') }}" data-auth-mode="register">Sign up for free!</a>
@@ -67,14 +77,35 @@
 
                 <form
                     class="auth-form auth-form--register"
+                    method="POST"
+                    action="{{ route('register') }}"
                     data-auth-panel="register"
                     aria-hidden="{{ $isRegister ? 'false' : 'true' }}"
                     @unless ($isRegister) inert @endunless
                 >
+                    @csrf
+                    <input type="hidden" name="_form" value="register">
                     <h1>Hello!</h1>
                     <p class="auth-intro">Welcome! Please sign up for your account to begin.</p>
 
                     <div class="auth-fields">
+                        <div class="auth-field">
+                            <label for="register-name">Full Name</label>
+                            <input
+                                id="register-name"
+                                name="name"
+                                type="text"
+                                autocomplete="name"
+                                placeholder="Please enter your full name"
+                                value="{{ old('name') }}"
+                                @error('name') aria-invalid="true" @enderror
+                                required
+                            >
+                            @error('name')
+                                <p class="text-xs text-red-600 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <div class="auth-field">
                             <label for="register-email">E-mail</label>
                             <input
@@ -84,8 +115,12 @@
                                 autocomplete="email"
                                 placeholder="Please enter your e-mail"
                                 value="{{ old('email') }}"
+                                @error('email') aria-invalid="true" @enderror
                                 required
                             >
+                            @error('email')
+                                <p class="text-xs text-red-600 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="auth-field">
@@ -96,8 +131,12 @@
                                 type="password"
                                 autocomplete="new-password"
                                 placeholder="Please enter your password"
+                                @error('password') aria-invalid="true" @enderror
                                 required
                             >
+                            @error('password')
+                                <p class="text-xs text-red-600 mt-1 font-medium">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <div class="auth-field">
@@ -108,17 +147,18 @@
                                 type="password"
                                 autocomplete="new-password"
                                 placeholder="Please confirm your password"
+                                @error('password') aria-invalid="true" @enderror
                                 required
                             >
                         </div>
                     </div>
 
                     <label class="auth-remember auth-register-remember" for="register-remember">
-                        <input id="register-remember" name="remember" type="checkbox">
+                        <input id="register-remember" name="remember" type="checkbox" value="1">
                         <span>Remember me</span>
                     </label>
 
-                    <button class="auth-submit" type="button">Sign up</button>
+                    <button class="auth-submit" type="submit">Sign up</button>
                     <p class="auth-switch">
                         Already have an account?
                         <a href="{{ route('login') }}" data-auth-mode="login">Log in here!</a>
