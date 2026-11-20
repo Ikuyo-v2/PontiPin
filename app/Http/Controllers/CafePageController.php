@@ -2,38 +2,65 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cafe;
+
 class CafePageController extends Controller
 {
-// app/Http/Controllers/CafePageController.php
+    // app/Http/Controllers/CafePageController.php
 
-public function index()
-{
-    $title = 'PontiPin - Cafe Catalog';
+    public function index()
+    {
+        $title = 'PontiPin - Cafe Catalog';
+        $selectedCafe = null;
+        $menus = collect();
 
-    $cafe = [
-        [
-            'id' => 1,
-            'name' => 'Kedai Kopi Aming',
-            'location' => 'Jl. Gajahmada',
-            'latitude' => -0.0278,
-            'longitude' => 109.3442,
-            'rating' => 4.8,
-            'tags' => 'Coffee Shop, Affordable',
-            'image' => 'https://images.unsplash.com/photo-1521017432531-fbd92d768814?q=80&w=900',
-            'subtitle' => 'Legendary Pontianak coffee',
-            'description' => 'Legendary old-school Pontianak coffee stall serving robusta.',
-        ],
-        // ...
-    ];
+        try {
+            $selectedCafe = Cafe::query()->first();
+            $menus = $selectedCafe?->menus()->get() ?? collect();
+        } catch (\Throwable) {
+            $selectedCafe = null;
+            $menus = collect();
+        }
 
-    // Pick the first cafe to display on this page
-    $selectedCafe = $cafe[0];
+        if ($menus->isEmpty()) {
+            $menus = collect([
+                [
+                    'name' => 'Kopi O Panas',
+                    'category' => 'Coffee',
+                    'price' => 8000,
+                    'image' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Classic black robusta, brewed the old way.',
+                ],
+                [
+                    'name' => 'Kopi Susu Aming',
+                    'category' => 'Coffee',
+                    'price' => 10000,
+                    'image' => 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Robusta with condensed milk, sweet and strong.',
+                ],
+                [
+                    'name' => 'Roti Srikaya',
+                    'category' => 'Snacks',
+                    'price' => 12000,
+                    'image' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Toasted bread with homemade kaya jam.',
+                ],
+                [
+                    'name' => 'Teh Obeng',
+                    'category' => 'Tea',
+                    'price' => 6000,
+                    'image' => 'https://images.unsplash.com/photo-1499638673689-79a0b5115d87?q=80&w=200&auto=format&fit=crop',
+                    'description' => 'Iced sweet tea, Pontianak style.',
+                ],
+            ]);
+        }
 
-    return view('cafe-page', [
-        'title' => $title,
-        'cafe' => $selectedCafe,
-    ]);
-}
+        return view('cafe-page', [
+            'title' => $title,
+            'cafe' => $selectedCafe?->toArray(),
+            'menus' => $menus,
+        ]);
+    }
 
     public function show($id)
     {

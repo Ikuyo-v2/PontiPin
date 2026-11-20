@@ -25,60 +25,38 @@
         <section>
             <h2 class="font-display text-2xl font-semibold mb-4">Menu &amp; Prices</h2>
             <div class="flex flex-wrap gap-2 mb-6">
-                <button class="px-4 py-1.5 rounded-full bg-rust text-white text-sm font-medium">All</button>
-                <button class="px-4 py-1.5 rounded-full bg-white text-ink/80 text-sm font-medium border border-ink/10">Coffee</button>
-                <button class="px-4 py-1.5 rounded-full bg-white text-ink/80 text-sm font-medium border border-ink/10">Snacks</button>
-                <button class="px-4 py-1.5 rounded-full bg-white text-ink/80 text-sm font-medium border border-ink/10">Tea</button>
+                @foreach (['All', 'Coffee', 'Snacks', 'Tea'] as $category)
+                    <button
+                        type="button"
+                        data-menu-filter="{{ $category }}"
+                        class="menu-filter px-4 py-1.5 rounded-full text-sm font-medium border border-ink/10 {{ $category === 'All' ? 'bg-rust text-white' : 'bg-white text-ink/80' }}"
+                        aria-pressed="{{ $category === 'All' ? 'true' : 'false' }}">
+                        {{ $category }}
+                    </button>
+                @endforeach
             </div>
 
             <div class="grid sm:grid-cols-2 gap-4">
-                <div class="bg-white rounded-2xl p-3 flex gap-3 shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="Kopi O Panas" />
+                @foreach ($menus as $menu)
+                @php
+                    $menuCategory = is_array($menu) ? ($menu['category'] ?? 'Other') : ($menu->category ?? 'Other');
+                    $menuName = is_array($menu) ? $menu['name'] : $menu->name;
+                    $menuPrice = is_array($menu) ? $menu['price'] : $menu->price;
+                    $menuImage = is_array($menu) ? $menu['image'] : $menu->image;
+                    $menuDescription = is_array($menu) ? $menu['description'] : $menu->description;
+                @endphp
+                <div class="menu-item bg-white rounded-2xl p-3 flex gap-3 shadow-sm" data-category="{{ $menuCategory }}">
+                    <img src="{{ $menuImage }}" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="{{ $menuName }}" />
                     <div class="flex-1">
                         <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-semibold text-sm">Kopi O Panas</h3>
-                            <span class="text-rust font-semibold text-sm whitespace-nowrap">Rp 8.000</span>
+                            <h3 class="font-semibold text-sm">{{ $menuName }}</h3>
+                            <span class="text-rust font-semibold text-sm whitespace-nowrap">Rp {{ number_format((float) $menuPrice, 0, ',', '.') }}</span>
                         </div>
-                        <p class="text-xs text-ink/60 mt-1 leading-snug">Classic black robusta, brewed the old way.</p>
-                        <span class="text-[10px] tracking-wide text-ink/40 font-medium mt-1 inline-block">COFFEE</span>
+                        <p class="text-xs text-ink/60 mt-1 leading-snug">{{ $menuDescription }}</p>
+                        <span class="text-[10px] tracking-wide text-ink/40 font-medium mt-1 inline-block">{{ strtoupper($menuCategory) }}</span>
                     </div>
                 </div>
-
-                <div class="bg-white rounded-2xl p-3 flex gap-3 shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="Kopi Susu Aming" />
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-semibold text-sm">Kopi Susu Aming</h3>
-                            <span class="text-rust font-semibold text-sm whitespace-nowrap">Rp 10.000</span>
-                        </div>
-                        <p class="text-xs text-ink/60 mt-1 leading-snug">Robusta with condensed milk, sweet and strong.</p>
-                        <span class="text-[10px] tracking-wide text-ink/40 font-medium mt-1 inline-block">COFFEE</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-3 flex gap-3 shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="Roti Srikaya" />
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-semibold text-sm">Roti Srikaya</h3>
-                            <span class="text-rust font-semibold text-sm whitespace-nowrap">Rp 12.000</span>
-                        </div>
-                        <p class="text-xs text-ink/60 mt-1 leading-snug">Toasted bread with homemade kaya jam.</p>
-                        <span class="text-[10px] tracking-wide text-ink/40 font-medium mt-1 inline-block">SNACKS</span>
-                    </div>
-                </div>
-
-                <div class="bg-white rounded-2xl p-3 flex gap-3 shadow-sm">
-                    <img src="https://images.unsplash.com/photo-1499638673689-79a0b5115d87?q=80&w=200&auto=format&fit=crop" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="Teh Obeng" />
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start gap-2">
-                            <h3 class="font-semibold text-sm">Teh Obeng</h3>
-                            <span class="text-rust font-semibold text-sm whitespace-nowrap">Rp 6.000</span>
-                        </div>
-                        <p class="text-xs text-ink/60 mt-1 leading-snug">Iced sweet tea, Pontianak style.</p>
-                        <span class="text-[10px] tracking-wide text-ink/40 font-medium mt-1 inline-block">TEA</span>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </section>
 
