@@ -3,12 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cafe;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class CafePageController extends Controller
 {
-    // app/Http/Controllers/CafePageController.php
-
-    public function index()
+    public function index(): View
     {
         $title = 'PontiPin - Cafe Catalog';
         $selectedCafe = null;
@@ -38,20 +39,6 @@ class CafePageController extends Controller
                     'image' => 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop',
                     'description' => 'Robusta with condensed milk, sweet and strong.',
                 ],
-                [
-                    'name' => 'Roti Srikaya',
-                    'category' => 'Snacks',
-                    'price' => 12000,
-                    'image' => 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?q=80&w=200&auto=format&fit=crop',
-                    'description' => 'Toasted bread with homemade kaya jam.',
-                ],
-                [
-                    'name' => 'Teh Obeng',
-                    'category' => 'Tea',
-                    'price' => 6000,
-                    'image' => 'https://images.unsplash.com/photo-1499638673689-79a0b5115d87?q=80&w=200&auto=format&fit=crop',
-                    'description' => 'Iced sweet tea, Pontianak style.',
-                ],
             ]);
         }
 
@@ -62,48 +49,99 @@ class CafePageController extends Controller
         ]);
     }
 
-    public function show($id)
+    public function show(int $id): View
     {
-        $title = 'PontiPin - Cafe Detail';
+        $cafe = Cafe::with('menus')->findOrFail($id);
 
-        return view('cafe-page.show',
-            ['title' => $title]
-        );
+        return view('cafe-page', [
+            'title' => "PontiPin - {$cafe->name}",
+            'cafe' => $cafe->toArray(),
+            'menus' => $cafe->menus,
+        ]);
     }
 
-    public function create()
+    public function create(): RedirectResponse
     {
-        $title = 'PontiPin - Create Cafe';
-
-        return view('cafe-page.create',
-            ['title' => $title]
-        );
+        return redirect()->route('admin-page.index', ['action' => 'create']);
     }
 
-    public function edit($id)
+    public function store(Request $request): RedirectResponse
     {
-        $title = 'PontiPin - Edit Cafe';
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'rating' => ['nullable', 'numeric', 'min:0', 'max:5'],
+            'opening_hours' => ['nullable', 'string', 'max:255'],
+            'facilities' => ['nullable', 'string'],
+            'tags' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'string', 'max:255'],
+            'image_file' => ['nullable', 'image', 'max:4096'],
+            'subtitle' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+        ]);
 
-        return view('cafe-page.edit',
-            ['title' => $title]
-        );
+        if ($request->hasFile('image_file')) {
+            $path = $request->file('image_file')->store('CAFES', 'public');
+            $validated['image'] = $path;
+        }
+
+        unset($validated['image_file']);
+
+        if (! isset($validated['rating']) || $validated['rating'] === null) {
+            $validated['rating'] = 5.0;
+        }
+
+        $cafe = Cafe::create($validated);
+
+        return back()->with('success', "Cafe '{$cafe->name}' created successfully.");
     }
 
-    public function update($id)
+    public function edit(int $id): RedirectResponse
     {
-        $title = 'PontiPin - Update Cafe';
-
-        return view('cafe-page.update',
-            ['title' => $title]
-        );
+        return redirect()->route('admin-page.index', ['edit' => $id]);
     }
 
-    public function destroy($id)
+    public function update(Request $request, int $id): RedirectResponse
     {
-        $title = 'PontiPin - Delete Cafe';
+        $cafe = Cafe::findOrFail($id);
 
-        return view('cafe-page.destroy',
-            ['title' => $title]
-        );
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'location' => ['required', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:255'],
+            'rating' => ['nullable', 'numeric', 'min:0', 'max:5'],
+            'opening_hours' => ['nullable', 'string', 'max:255'],
+            'facilities' => ['nullable', 'string'],
+            'tags' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'string', 'max:255'],
+            'image_file' => ['nullable', 'image', 'max:4096'],
+            'subtitle' => ['nullable', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+            'latitude' => ['nullable', 'numeric'],
+            'longitude' => ['nullable', 'numeric'],
+        ]);
+
+        if ($request->hasFile('image_file')) {
+            $path = $request->file('image_file')->store('CAFES', 'public');
+            $validated['image'] = $path;
+        }
+
+        unset($validated['image_file']);
+
+        $cafe->update($validated);
+
+        return back()->with('success', "Cafe '{$cafe->name}' updated successfully.");
+    }
+
+    public function destroy(int $id): RedirectResponse
+    {
+        $cafe = Cafe::findOrFail($id);
+        $name = $cafe->name;
+        $cafe->delete();
+
+        return back()->with('success', "Cafe '{$name}' deleted successfully.");
     }
 }

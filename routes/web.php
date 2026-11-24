@@ -18,6 +18,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/admin-page', [AdminPageController::class, 'index'])->name('admin-page.index');
+Route::delete('/admin/users/{id}', [AdminPageController::class, 'destroyUser'])->name('admin.users.destroy')->whereNumber('id');
 
 Route::name('home.')->prefix('home')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
@@ -37,6 +38,7 @@ Route::name('explore-cafe.')->prefix('explore-cafe')->group(function () {
 });
 Route::name('cafe-page.')->prefix('cafe-page')->group(function () {
     Route::get('/', [CafePageController::class, 'index'])->name('index');
+    Route::post('/', [CafePageController::class, 'store'])->name('store');
     Route::get('/{id}', [CafePageController::class, 'show'])->name('show')->whereNumber('id');
     Route::get('/create', [CafePageController::class, 'create'])->name('create');
     Route::get('/{id}/edit', [CafePageController::class, 'edit'])->name('edit')->whereNumber('id');

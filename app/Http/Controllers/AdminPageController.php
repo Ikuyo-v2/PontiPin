@@ -6,6 +6,7 @@ use App\Models\Cafe;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class AdminPageController extends Controller
 {
@@ -14,7 +15,7 @@ class AdminPageController extends Controller
         try {
             $totalCafes = Cafe::count();
             $averageRating = Cafe::avg('rating') ?? 0;
-            $topCafes = Cafe::orderByDesc('rating')->take(5)->get();
+            $topCafes = Cafe::orderByDesc('rating')->get();
         } catch (\Throwable) {
             $totalCafes = 0;
             $averageRating = 0;
@@ -22,7 +23,7 @@ class AdminPageController extends Controller
         }
 
         try {
-            $users = User::latest()->take(5)->get();
+            $users = User::latest()->get();
         } catch (\Throwable) {
             $users = collect();
         }
@@ -43,5 +44,19 @@ class AdminPageController extends Controller
             'users' => $users,
             'newestReviews' => $newestReviews,
         ]);
+    }
+
+    public function destroyUser(int $id): RedirectResponse
+    {
+        $user = User::findOrFail($id);
+
+        if (auth()->check() && auth()->id() === $user->id) {
+            return back()->with('error', 'You cannot delete your own account while logged in.');
+        }
+
+        $name = $user->name;
+        $user->delete();
+
+        return back()->with('success', "User '{$name}' deleted successfully.");
     }
 }

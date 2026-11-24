@@ -17,9 +17,9 @@ class ExploreCafeController
         ]);
     }
 
-    public function show(int $id): View
+    public function show(int $id)
     {
-        return view('ExploreCafe.show', ['title' => 'PontiPin - Explore Detail']);
+        return redirect()->route('cafe-page.show', $id);
     }
 
     public function create(): View
