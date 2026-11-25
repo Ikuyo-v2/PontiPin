@@ -23,7 +23,10 @@ if (el) {
         attribution: '&copy; OpenStreetMap contributors',
     }).addTo(map);
 
-    L.marker([lat, lng]).addTo(map).bindPopup(`<b>${name}</b>`).openPopup();
+    const popupContent = document.createElement('b');
+    popupContent.textContent = name;
+
+    L.marker([lat, lng]).addTo(map).bindPopup(popupContent).openPopup();
 }
 
 const authCard = document.querySelector('[data-auth-card]');

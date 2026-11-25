@@ -2,52 +2,49 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cafe;
+use Illuminate\Contracts\View\View;
+
 class HomeController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $title = 'PontiPin - Cafe Catalog';
-        // Temporary data of cafe
-        $cafe = [
-            [
-                'name' => 'Kopi Kenangan',
-                'id' => 1,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/kopi-kenangan.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Kenangan adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan kopi dan makanan ringan, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
-            [
-                'name' => 'Kopi Khatulistiwa',
-                'id' => 2,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/kopi-khatulistiwa.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Khatulistiwa adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan kopi dan makanan ringan, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
-            [
-                'name' => 'Warung Upnormal',
-                'id' => 3,
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable',
-                'Student-Friendly',
-                'image' => 'https://example.com/images/warung-upnormal.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Warung Upnormal adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar. Dengan berbagai pilihan makanan dan minuman, kafe ini menjadi tempat favorit bagi mahasiswa dan pelajar.',
-            ],
+        $popularCafes = collect();
+        $totalCafes = 0;
+        $totalDistricts = 0;
+        $vibes = collect();
 
-        ];
+        try {
+            $popularCafes = Cafe::query()
+                ->withCount('reviews')
+                ->orderByDesc('rating')
+                ->orderByDesc('reviews_count')
+                ->orderByDesc('id')
+                ->take(3)
+                ->get();
+
+            $totalCafes = Cafe::query()->count();
+            $totalDistricts = Cafe::query()
+                ->whereNotNull('location')
+                ->where('location', '!=', '')
+                ->distinct()
+                ->count('location');
+
+            $vibes = Cafe::tagCounts()->take(7);
+        } catch (\Throwable) {
+            $popularCafes = collect();
+            $totalCafes = 0;
+            $totalDistricts = 0;
+            $vibes = collect();
+        }
 
         return view('Home', [
             'title' => $title,
-            'cafe' => $cafe,
+            'popularCafes' => $popularCafes,
+            'totalCafes' => $totalCafes,
+            'totalDistricts' => $totalDistricts,
+            'vibes' => $vibes,
         ]);
     }
 

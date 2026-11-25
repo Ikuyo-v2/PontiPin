@@ -2,22 +2,69 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cafe;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
-class ExploreCafeController
+class ExploreCafeController extends Controller
 {
-    public function index(): View
+    public function index(Request $request): View
     {
         $title = 'PontiPin - Explore Cafe';
-        $cafe = $this->getCafeData();
+        $search = trim((string) $request->query('search', ''));
+        $location = trim((string) $request->query('location', ''));
+        $tag = trim((string) $request->query('tag', ''));
+        $sort = trim((string) $request->query('sort', 'populer'));
+
+        $cafes = collect();
+        $locations = collect();
+        $availableTags = collect();
+
+        try {
+            $query = Cafe::query()
+                ->withCount('reviews')
+                ->search($search)
+                ->inLocation($location)
+                ->withTag($tag);
+
+            match ($sort) {
+                'rating' => $query->orderByDesc('rating')->orderByDesc('reviews_count')->orderBy('id'),
+                'latest' => $query->latest('id'),
+                default => $query->orderByDesc('reviews_count')->orderByDesc('rating')->orderBy('id'),
+            };
+
+            $cafes = $query->get();
+
+            $locations = Cafe::query()
+                ->whereNotNull('location')
+                ->where('location', '!=', '')
+                ->distinct()
+                ->orderBy('location')
+                ->pluck('location');
+
+            $availableTags = Cafe::tagCounts()->pluck('name');
+        } catch (\Throwable) {
+            $cafes = collect();
+            $locations = collect();
+            $availableTags = collect();
+        }
 
         return view('explore', [
             'title' => $title,
-            'cafe' => $cafe,
+            'cafes' => $cafes,
+            'locations' => $locations,
+            'availableTags' => $availableTags,
+            'filters' => [
+                'search' => $search,
+                'location' => $location,
+                'tag' => $tag,
+                'sort' => $sort,
+            ],
         ]);
     }
 
-    public function show(int $id)
+    public function show(int $id): RedirectResponse
     {
         return redirect()->route('cafe-page.show', $id);
     }
@@ -40,41 +87,5 @@ class ExploreCafeController
     public function destroy(int $id): View
     {
         return view('ExploreCafe.destroy', ['title' => 'PontiPin - Delete Explore Cafe']);
-    }
-
-    private function getCafeData(): array
-    {
-        return [
-            [
-                'id' => 1,
-                'name' => 'Kopi Kenangan',
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable, Student-Friendly',
-                'image' => 'https://example.com/images/kopi-kenangan.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Kenangan adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar.',
-            ],
-            [
-                'id' => 2,
-                'name' => 'Kopi Khatulistiwa',
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable, Student-Friendly',
-                'image' => 'https://example.com/images/kopi-khatulistiwa.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Kopi Khatulistiwa adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar.',
-            ],
-            [
-                'id' => 3,
-                'name' => 'Warung Upnormal',
-                'location' => 'Jl. Gajahmada',
-                'rating' => 4.5,
-                'tags' => 'Instagrammable, Cozy, Affordable, Student-Friendly',
-                'image' => 'https://example.com/images/warung-upnormal.jpg',
-                'subtitle' => 'Kafe yang nyaman dan cocok untuk belajar',
-                'description' => 'Warung Upnormal adalah kafe yang menawarkan suasana nyaman dan cocok untuk belajar.',
-            ],
-        ];
     }
 }

@@ -11,52 +11,30 @@ class CafePageController extends Controller
 {
     public function index(): View
     {
-        $title = 'PontiPin - Cafe Catalog';
-        $selectedCafe = null;
-        $menus = collect();
-
-        try {
-            $selectedCafe = Cafe::query()->first();
-            $menus = $selectedCafe?->menus()->get() ?? collect();
-        } catch (\Throwable) {
-            $selectedCafe = null;
-            $menus = collect();
-        }
-
-        if ($menus->isEmpty()) {
-            $menus = collect([
-                [
-                    'name' => 'Kopi O Panas',
-                    'category' => 'Coffee',
-                    'price' => 8000,
-                    'image' => 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=200&auto=format&fit=crop',
-                    'description' => 'Classic black robusta, brewed the old way.',
-                ],
-                [
-                    'name' => 'Kopi Susu Aming',
-                    'category' => 'Coffee',
-                    'price' => 10000,
-                    'image' => 'https://images.unsplash.com/photo-1541167760496-1628856ab772?q=80&w=200&auto=format&fit=crop',
-                    'description' => 'Robusta with condensed milk, sweet and strong.',
-                ],
-            ]);
-        }
-
-        return view('cafe-page', [
-            'title' => $title,
-            'cafe' => $selectedCafe?->toArray(),
-            'menus' => $menus,
-        ]);
+        return $this->renderCafe(Cafe::query()->firstOrFail());
     }
 
     public function show(int $id): View
     {
-        $cafe = Cafe::with('menus')->findOrFail($id);
+        return $this->renderCafe(Cafe::query()->findOrFail($id));
+    }
+
+    private function renderCafe(Cafe $cafe): View
+    {
+        $cafe->load(['menus', 'reviews.user']);
+        $menus = $cafe->menus;
+        $facilities = collect(explode(',', (string) $cafe->facilities))
+            ->map(static fn (string $facility): string => trim($facility))
+            ->filter()
+            ->values();
 
         return view('cafe-page', [
             'title' => "PontiPin - {$cafe->name}",
-            'cafe' => $cafe->toArray(),
-            'menus' => $cafe->menus,
+            'cafe' => $cafe,
+            'menus' => $menus,
+            'menuCategories' => $menus->pluck('category')->filter()->unique()->values(),
+            'reviews' => $cafe->reviews->sortByDesc('created_at')->values(),
+            'facilities' => $facilities,
         ]);
     }
 
