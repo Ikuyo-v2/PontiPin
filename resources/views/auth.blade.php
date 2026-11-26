@@ -59,14 +59,7 @@
                             @enderror
                         </div>
                     </div>
-
-                    <div class="auth-options">
-                        <label class="auth-remember" for="login-remember">
-                            <input id="login-remember" name="remember" type="checkbox" value="1">
-                            <span>Remember me</span>
-                        </label>
-                        <span class="auth-forgot">Forgot password?</span>
-                    </div>
+                    <br>
 
                     <button class="auth-submit" type="submit">Sign in</button>
                     <p class="auth-switch">
@@ -153,10 +146,8 @@
                         </div>
                     </div>
 
-                    <label class="auth-remember auth-register-remember" for="register-remember">
-                        <input id="register-remember" name="remember" type="checkbox" value="1">
-                        <span>Remember me</span>
-                    </label>
+                        <br>
+
 
                     <button class="auth-submit" type="submit">Sign up</button>
                     <p class="auth-switch">

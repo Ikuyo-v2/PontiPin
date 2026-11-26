@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Database\Factories\MenuFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -36,6 +37,36 @@ class Menu extends Model
         return [
             'price' => 'integer',
         ];
+    }
+
+    /**
+     * Resolve the display image URL for the menu item.
+     *
+     * @return Attribute<string, never>
+     */
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::get(function (): string {
+            $image = trim((string) ($this->image ?? ''));
+
+            if ($image === '') {
+                return asset('images/cafe1.webp');
+            }
+
+            if (str_starts_with($image, 'http://') || str_starts_with($image, 'https://')) {
+                return $image;
+            }
+
+            if (str_starts_with($image, 'storage/')) {
+                return asset($image);
+            }
+
+            if (is_file(public_path($image))) {
+                return asset($image);
+            }
+
+            return asset('storage/'.$image);
+        });
     }
 
     /**

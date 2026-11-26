@@ -231,6 +231,96 @@
             </div>
         </section>
 
+        {{-- Menu management section --}}
+        <section id="menu-management" class="mt-8 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-ink/10">
+            <div class="flex flex-col gap-3 border-b border-ink/10 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+                <div>
+                    <h2 class="font-display text-2xl text-ink sm:text-3xl">Manage menu items</h2>
+                    <p class="mt-0.5 text-xs text-ink/60">Showing {{ $menus->count() }} menu item(s)</p>
+                </div>
+                @auth
+                    @if ($cafes->isNotEmpty())
+                        <button type="button" onclick="openCreateMenuModal()" class="inline-flex items-center gap-1.5 rounded-full bg-sand px-4 py-1.5 text-xs font-semibold text-espresso transition hover:bg-sand/80">
+                            <span>+ Add menu item</span>
+                        </button>
+                    @else
+                        <p class="text-sm text-ink/55">Add a cafe before creating menu items.</p>
+                    @endif
+                @else
+                    <a class="text-sm font-medium text-terracotta hover:underline" href="{{ route('login') }}">Sign in to manage menu items</a>
+                @endauth
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left">
+                    <thead class="bg-cream/40 text-xs font-semibold uppercase tracking-wide text-ink/55">
+                        <tr>
+                            <th scope="col" class="px-5 py-3 sm:px-7">Menu item</th>
+                            <th scope="col" class="px-4 py-3">Cafe</th>
+                            <th scope="col" class="px-4 py-3">Category</th>
+                            <th scope="col" class="px-4 py-3">Price</th>
+                            <th scope="col" class="px-4 py-3">Last updated</th>
+                            @auth
+                                <th scope="col" class="px-4 py-3">Actions</th>
+                            @endauth
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-ink/10 text-sm text-ink">
+                    @forelse ($menus as $menu)
+                        <tr class="transition-colors hover:bg-cream/60">
+                            <td class="px-5 py-3 sm:px-7">
+                                <div class="flex items-center gap-3">
+                                    <img class="size-12 shrink-0 rounded-lg object-cover ring-1 ring-ink/10" src="{{ $menu->image_url }}" alt="{{ $menu->name }}">
+                                    <div class="min-w-0">
+                                        <p class="font-medium text-ink">{{ $menu->name }}</p>
+                                        @if ($menu->description)
+                                            <p class="line-clamp-1 text-xs text-ink/50">{{ $menu->description }}</p>
+                                        @endif
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="whitespace-nowrap px-4 py-3 text-ink/70">{{ $menu->cafe?->name ?? 'Unknown cafe' }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-ink/70">{{ $menu->category ?: '-' }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 font-medium text-terracotta">Rp {{ number_format((float) $menu->price, 0, ',', '.') }}</td>
+                            <td class="whitespace-nowrap px-4 py-3 text-ink/60">{{ $menu->updated_at?->format('m/d/Y') ?? '-' }}</td>
+                            @auth
+                                <td class="whitespace-nowrap px-4 py-3">
+                                    <div class="flex items-center gap-3">
+                                        <button
+                                            type="button"
+                                            data-menu-update-url="{{ route('admin.menus.update', $menu) }}"
+                                            data-menu-cafe-id="{{ $menu->cafe_id }}"
+                                            data-menu-name="{{ $menu->name }}"
+                                            data-menu-category="{{ $menu->category }}"
+                                            data-menu-price="{{ $menu->price }}"
+                                            data-menu-image="{{ $menu->image }}"
+                                            data-menu-description="{{ $menu->description }}"
+                                            onclick="openEditMenuModal(this)"
+                                            class="font-medium text-ink/70 hover:text-terracotta hover:underline">
+                                            Edit
+                                        </button>
+                                        <button
+                                            type="button"
+                                            data-menu-delete-url="{{ route('admin.menus.destroy', $menu) }}"
+                                            data-menu-name="{{ $menu->name }}"
+                                            onclick="openDeleteMenuModal(this)"
+                                            class="font-medium text-red-700 hover:text-red-800 hover:underline">
+                                            Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            @endauth
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="{{ auth()->check() ? 6 : 5 }}" class="px-5 py-12 text-center text-ink/55 sm:px-7">No menu items yet.</td>
+                        </tr>
+                    @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
         {{-- Users management section --}}
         <section id="users-table" class="mt-8 overflow-hidden rounded-2xl bg-white shadow-sm ring-1 ring-ink/10">
             <div class="flex flex-col gap-3 border-b border-ink/10 px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-7">
@@ -537,6 +627,133 @@
             </form>
         </div>
     </div>
+
+    @auth
+    {{-- Menu item modals --}}
+    <div id="createMenuModal" class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-ink/60 p-4 backdrop-blur-xs" role="dialog" aria-modal="true" aria-labelledby="createMenuTitle">
+        <div class="relative my-8 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-ink/10 sm:p-8">
+            <div class="mb-6 flex items-start justify-between border-b border-ink/10 pb-4">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-terracotta">New entry</p>
+                    <h3 id="createMenuTitle" class="font-display text-2xl font-semibold text-ink">Add Menu Item</h3>
+                </div>
+                <button type="button" onclick="closeModal('createMenuModal')" class="grid size-8 place-items-center rounded-full text-lg text-ink/50 hover:bg-cream hover:text-ink" aria-label="Close">✕</button>
+            </div>
+            <form action="{{ route('admin.menus.store') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                @csrf
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="create_menu_cafe_id" class="mb-1 block text-xs font-semibold text-ink/70">Cafe *</label>
+                        <select id="create_menu_cafe_id" name="cafe_id" required class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                            @foreach ($cafes as $cafe)
+                                <option value="{{ $cafe->id }}">{{ $cafe->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="create_menu_name" class="mb-1 block text-xs font-semibold text-ink/70">Menu item name *</label>
+                        <input id="create_menu_name" type="text" name="name" required maxlength="255" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                    <div>
+                        <label for="create_menu_category" class="mb-1 block text-xs font-semibold text-ink/70">Category</label>
+                        <input id="create_menu_category" type="text" name="category" maxlength="255" placeholder="e.g. Coffee" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                    <div>
+                        <label for="create_menu_price" class="mb-1 block text-xs font-semibold text-ink/70">Price (Rp) *</label>
+                        <input id="create_menu_price" type="number" name="price" min="0" step="1" required class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="create_menu_image" class="mb-1 block text-xs font-semibold text-ink/70">Image path or URL</label>
+                        <input id="create_menu_image" type="text" name="image" maxlength="255" placeholder="e.g. CAFES/menu.jpg or https://..." class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                    <div>
+                        <label for="create_menu_image_file" class="mb-1 block text-xs font-semibold text-ink/70">Or upload an image</label>
+                        <input id="create_menu_image_file" type="file" name="image_file" accept="image/*" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3 py-2 text-xs text-ink/80 file:mr-3 file:rounded-lg file:border-0 file:bg-sand file:px-3 file:py-1 file:text-xs file:font-semibold file:text-espresso">
+                    </div>
+                </div>
+                <div>
+                    <label for="create_menu_description" class="mb-1 block text-xs font-semibold text-ink/70">Description</label>
+                    <textarea id="create_menu_description" name="description" rows="3" class="w-full resize-none rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"></textarea>
+                </div>
+                <div class="flex items-center justify-end gap-3 border-t border-ink/10 pt-4">
+                    <button type="button" onclick="closeModal('createMenuModal')" class="rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink/70 hover:bg-cream">Cancel</button>
+                    <button type="submit" class="rounded-full bg-terracotta px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-terracotta/90">Create Menu Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="editMenuModal" class="fixed inset-0 z-50 hidden items-center justify-center overflow-y-auto bg-ink/60 p-4 backdrop-blur-xs" role="dialog" aria-modal="true" aria-labelledby="editMenuTitle">
+        <div class="relative my-8 max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl ring-1 ring-ink/10 sm:p-8">
+            <div class="mb-6 flex items-start justify-between border-b border-ink/10 pb-4">
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-terracotta">Update record</p>
+                    <h3 id="editMenuTitle" class="font-display text-2xl font-semibold text-ink">Edit Menu Item</h3>
+                </div>
+                <button type="button" onclick="closeModal('editMenuModal')" class="grid size-8 place-items-center rounded-full text-lg text-ink/50 hover:bg-cream hover:text-ink" aria-label="Close">✕</button>
+            </div>
+            <form id="editMenuForm" method="POST" enctype="multipart/form-data" class="space-y-4">
+                @csrf
+                @method('PUT')
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="edit_menu_cafe_id" class="mb-1 block text-xs font-semibold text-ink/70">Cafe *</label>
+                        <select id="edit_menu_cafe_id" name="cafe_id" required class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                            @foreach ($cafes as $cafe)
+                                <option value="{{ $cafe->id }}">{{ $cafe->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="edit_menu_name" class="mb-1 block text-xs font-semibold text-ink/70">Menu item name *</label>
+                        <input id="edit_menu_name" type="text" name="name" required maxlength="255" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                    <div>
+                        <label for="edit_menu_category" class="mb-1 block text-xs font-semibold text-ink/70">Category</label>
+                        <input id="edit_menu_category" type="text" name="category" maxlength="255" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                    <div>
+                        <label for="edit_menu_price" class="mb-1 block text-xs font-semibold text-ink/70">Price (Rp) *</label>
+                        <input id="edit_menu_price" type="number" name="price" min="0" step="1" required class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                </div>
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div>
+                        <label for="edit_menu_image" class="mb-1 block text-xs font-semibold text-ink/70">Image path or URL</label>
+                        <input id="edit_menu_image" type="text" name="image" maxlength="255" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta">
+                    </div>
+                    <div>
+                        <label for="edit_menu_image_file" class="mb-1 block text-xs font-semibold text-ink/70">Or replace the image</label>
+                        <input id="edit_menu_image_file" type="file" name="image_file" accept="image/*" class="w-full rounded-xl border border-ink/15 bg-cream/30 px-3 py-2 text-xs text-ink/80 file:mr-3 file:rounded-lg file:border-0 file:bg-sand file:px-3 file:py-1 file:text-xs file:font-semibold file:text-espresso">
+                    </div>
+                </div>
+                <div>
+                    <label for="edit_menu_description" class="mb-1 block text-xs font-semibold text-ink/70">Description</label>
+                    <textarea id="edit_menu_description" name="description" rows="3" class="w-full resize-none rounded-xl border border-ink/15 bg-cream/30 px-3.5 py-2.5 text-sm text-ink focus:border-terracotta focus:outline-none focus:ring-1 focus:ring-terracotta"></textarea>
+                </div>
+                <div class="flex items-center justify-end gap-3 border-t border-ink/10 pt-4">
+                    <button type="button" onclick="closeModal('editMenuModal')" class="rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink/70 hover:bg-cream">Cancel</button>
+                    <button type="submit" class="rounded-full bg-terracotta px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-terracotta/90">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="deleteMenuModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-ink/60 p-4 backdrop-blur-xs" role="dialog" aria-modal="true" aria-labelledby="deleteMenuTitle">
+        <div class="relative w-full max-w-md rounded-3xl bg-white p-6 text-center shadow-2xl ring-1 ring-ink/10 sm:p-7">
+            <h3 id="deleteMenuTitle" class="font-display text-2xl font-semibold text-ink">Delete Menu Item?</h3>
+            <p class="mt-2 text-sm leading-relaxed text-ink/70">Are you sure you want to delete <span id="deleteMenuName" class="font-semibold text-ink"></span>? This action cannot be undone.</p>
+            <form id="deleteMenuForm" method="POST" class="mt-6 flex items-center justify-center gap-3">
+                @csrf
+                @method('DELETE')
+                <button type="button" onclick="closeModal('deleteMenuModal')" class="rounded-full border border-ink/20 px-5 py-2.5 text-sm font-medium text-ink/70 hover:bg-cream">Cancel</button>
+                <button type="submit" class="rounded-full bg-red-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-red-700">Yes, Delete</button>
+            </form>
+        </div>
+    </div>
+    @endauth
 </main>
 
 <script>
@@ -560,6 +777,32 @@
 
     function openCreateCafeModal() {
         openModal('createCafeModal');
+    }
+
+    function openCreateMenuModal() {
+        openModal('createMenuModal');
+    }
+
+    function openEditMenuModal(button) {
+        const menu = button.dataset;
+        const form = document.getElementById('editMenuForm');
+
+        form.action = menu.menuUpdateUrl;
+        document.getElementById('edit_menu_cafe_id').value = menu.menuCafeId;
+        document.getElementById('edit_menu_name').value = menu.menuName;
+        document.getElementById('edit_menu_category').value = menu.menuCategory;
+        document.getElementById('edit_menu_price').value = menu.menuPrice;
+        document.getElementById('edit_menu_image').value = menu.menuImage;
+        document.getElementById('edit_menu_description').value = menu.menuDescription;
+
+        openModal('editMenuModal');
+    }
+
+    function openDeleteMenuModal(button) {
+        const form = document.getElementById('deleteMenuForm');
+        form.action = button.dataset.menuDeleteUrl;
+        document.getElementById('deleteMenuName').textContent = button.dataset.menuName;
+        openModal('deleteMenuModal');
     }
 
     function openEditCafeModal(cafe) {
@@ -597,7 +840,7 @@
     }
 
     // Close on click outside backdrop
-    ['createCafeModal', 'editCafeModal', 'deleteCafeModal', 'deleteUserModal'].forEach(function(modalId) {
+    ['createCafeModal', 'editCafeModal', 'deleteCafeModal', 'deleteUserModal', 'createMenuModal', 'editMenuModal', 'deleteMenuModal'].forEach(function(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
             modal.addEventListener('click', function(e) {
@@ -611,7 +854,7 @@
     // Close on Escape key
     document.addEventListener('keydown', function(e) {
         if (e.key === 'Escape') {
-            ['createCafeModal', 'editCafeModal', 'deleteCafeModal', 'deleteUserModal'].forEach(closeModal);
+            ['createCafeModal', 'editCafeModal', 'deleteCafeModal', 'deleteUserModal', 'createMenuModal', 'editMenuModal', 'deleteMenuModal'].forEach(closeModal);
         }
     });
 </script>

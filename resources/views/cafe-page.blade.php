@@ -68,7 +68,7 @@
             <div class="grid sm:grid-cols-2 gap-4">
                 @forelse ($menus as $menu)
                     <div class="menu-item bg-white rounded-2xl p-3 flex gap-3 shadow-sm" data-category="{{ $menu->category ?? 'Other' }}">
-                        <img src="{{ $menu->image ?: asset('images/cafe1.webp') }}" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="{{ $menu->name }}" />
+                        <img src="{{ $menu->image_url }}" class="w-16 h-16 rounded-xl object-cover shrink-0" alt="{{ $menu->name }}" />
                         <div class="flex-1">
                             <div class="flex justify-between items-start gap-2">
                                 <h3 class="font-semibold text-sm">{{ $menu->name }}</h3>

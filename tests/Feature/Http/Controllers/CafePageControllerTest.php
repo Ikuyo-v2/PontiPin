@@ -24,7 +24,7 @@ test('the cafe detail page displays the selected cafe and its related database r
         'name' => 'Kopi Susu Mawar',
         'category' => 'Coffee',
         'price' => 12000,
-        'image' => 'images/menu-mawar.jpg',
+        'image' => 'CAFES/CW_MENU.jpg',
         'description' => 'Espresso dengan susu.',
     ]);
     $reviewer = User::create([
@@ -46,6 +46,7 @@ test('the cafe detail page displays the selected cafe and its related database r
         ->assertSee($cafe->opening_hours)
         ->assertSee('Cozy')
         ->assertSee('Wi-Fi')
+        ->assertSee('src="'.asset('CAFES/CW_MENU.jpg').'"', false)
         ->assertSee($menu->name)
         ->assertSee('Rp 12.000')
         ->assertSee($review->review)

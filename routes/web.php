@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CafePageController;
 use App\Http\Controllers\ExploreCafeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -20,6 +21,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->n
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/admin-page', [AdminPageController::class, 'index'])->name('admin-page.index');
 Route::delete('/admin/users/{id}', [AdminPageController::class, 'destroyUser'])->name('admin.users.destroy')->whereNumber('id');
+Route::middleware('auth')->name('admin.')->prefix('admin')->group(function () {
+    Route::resource('menus', MenuController::class)->only(['store', 'update', 'destroy']);
+});
 
 Route::name('home.')->prefix('home')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');

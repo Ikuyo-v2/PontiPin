@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cafe;
+use App\Models\Menu;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
@@ -41,6 +42,8 @@ class AdminPageController extends Controller
             'cafesNeedModeration' => 0,
             'reviewsNeedModeration' => 0,
             'topCafes' => $topCafes,
+            'cafes' => $topCafes,
+            'menus' => Menu::with('cafe')->latest()->get(),
             'users' => $users,
             'newestReviews' => $newestReviews,
         ]);

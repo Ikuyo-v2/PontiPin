@@ -19,7 +19,7 @@
       </h1>
 
       <p class="text-ink/65 text-[17px] leading-relaxed max-w-md mb-8">
-        The equator city runs on coffee. Explore curated cafes across every district — browse menus, check prices, read honest reviews, and find your next favorite spot.
+        The Khatulistiwa city runs on coffee. Explore curated cafes across every district. browse menus, check prices, read honest reviews, and find your next favorite spot.
       </p>
 
       <form action="{{ route('explore-cafe.index') }}" method="GET" class="flex items-center gap-2 bg-white rounded-full p-1.5 pl-5 max-w-lg shadow-sm ring-1 ring-ink/5 mb-6">
