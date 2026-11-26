@@ -40,6 +40,7 @@ test('the cafe detail page displays the selected cafe and its related database r
     $response = $this->get(route('cafe-page.show', $cafe->id));
 
     $response->assertOk()
+        ->assertSee('src="'.asset('images/PontiPin.png').'"', false)
         ->assertSee($cafe->name)
         ->assertSee($cafe->address)
         ->assertSee($cafe->opening_hours)

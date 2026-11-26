@@ -89,22 +89,56 @@
         <section>
             <h2 class="font-display text-2xl font-semibold mb-4">Reviews <span class="text-ink/40 font-sans text-lg font-normal">({{ $reviews->count() }})</span></h2>
 
+            @if (session('success'))
+                <p class="mb-4 rounded-xl bg-green-50 p-3 text-sm text-green-800" role="status">{{ session('success') }}</p>
+            @endif
+
             <div class="bg-white rounded-2xl p-6 shadow-sm mb-4">
                 <h3 class="font-semibold mb-3">Share your experience</h3>
-                <div class="flex gap-1 text-2xl mb-4" aria-label="Star rating input">
-                    <span class="star filled">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                    <span class="star">★</span>
-                </div>
-                <textarea
-                    class="w-full border border-ink/10 rounded-xl p-3 text-sm text-ink/80 placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-rust/40 resize-none"
-                    rows="3"
-                    placeholder="How was the coffee, the vibe, the Wi-Fi?"></textarea>
-                <button class="mt-4 bg-rust hover:bg-rustdark transition-colors text-white text-sm font-semibold px-5 py-2.5 rounded-full">
-                    Submit review
-                </button>
+                @auth
+                    <form method="POST" action="{{ route('cafe-page.reviews.store', $cafe) }}">
+                        @csrf
+                        <fieldset class="mb-4">
+                            <legend class="mb-1 text-sm font-medium">Your rating</legend>
+                            <div class="review-rating flex flex-row-reverse justify-end gap-1 text-2xl">
+                                @for ($rating = 5; $rating >= 1; $rating--)
+                                    <input
+                                        class="sr-only"
+                                        id="review-rating-{{ $rating }}"
+                                        type="radio"
+                                        name="rating"
+                                        value="{{ $rating }}"
+                                        aria-label="{{ $rating }} out of 5 stars"
+                                        @checked((int) old('rating') === $rating)
+                                        required>
+                                    <label class="star cursor-pointer" for="review-rating-{{ $rating }}">★</label>
+                                @endfor
+                            </div>
+                            @error('rating')
+                                <p class="mt-1 text-sm text-red-600" role="alert">{{ $message }}</p>
+                            @enderror
+                        </fieldset>
+                        <label class="sr-only" for="review-text">Your review</label>
+                        <textarea
+                            class="w-full resize-none rounded-xl border border-ink/10 p-3 text-sm text-ink/80 placeholder:text-ink/40 focus:outline-none focus:ring-2 focus:ring-rust/40"
+                            id="review-text"
+                            name="review"
+                            rows="3"
+                            maxlength="2000"
+                            placeholder="How was the coffee, the vibe, the Wi-Fi?"
+                            required>{{ old('review') }}</textarea>
+                        @error('review')
+                            <p class="mt-1 text-sm text-red-600" role="alert">{{ $message }}</p>
+                        @enderror
+                        <button type="submit" class="mt-4 rounded-full bg-rust px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-rustdark">
+                            Submit review
+                        </button>
+                    </form>
+                @else
+                    <p class="text-sm text-ink/60">
+                        <a class="font-semibold text-rust hover:underline" href="{{ route('login') }}">Sign in</a> to submit a review.
+                    </p>
+                @endauth
             </div>
 
             @forelse ($reviews as $review)

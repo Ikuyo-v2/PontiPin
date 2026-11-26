@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CafePageController;
 use App\Http\Controllers\ExploreCafeController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -39,6 +40,7 @@ Route::name('explore-cafe.')->prefix('explore-cafe')->group(function () {
 Route::name('cafe-page.')->prefix('cafe-page')->group(function () {
     Route::get('/', [CafePageController::class, 'index'])->name('index');
     Route::post('/', [CafePageController::class, 'store'])->name('store');
+    Route::post('/{cafe}/reviews', [ReviewController::class, 'store'])->middleware('auth')->name('reviews.store');
     Route::get('/{id}', [CafePageController::class, 'show'])->name('show')->whereNumber('id');
     Route::get('/create', [CafePageController::class, 'create'])->name('create');
     Route::get('/{id}/edit', [CafePageController::class, 'edit'])->name('edit')->whereNumber('id');

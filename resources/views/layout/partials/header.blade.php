@@ -1,6 +1,6 @@
   <header class="border-b border-ink/10 bg-cream">
       <div class="max-w-7xl mx-auto flex items-center justify-between px-6 lg:px-10 py-4">
-            <img src="images/PontiPin.png" alt="PontiPin Logo" class="h-10 w-auto object-contain md:h-12">
+            <img src="{{ asset('images/PontiPin.png') }}" alt="PontiPin Logo" class="h-10 w-auto object-contain md:h-12">
 
           <nav class="hidden md:flex items-center gap-8 text-[15px] text-ink/70">
               <a href="{{ route('home.index') }}"

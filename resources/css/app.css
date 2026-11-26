@@ -29,3 +29,7 @@
 .star.filled {
     color: #E0A82E;
 }
+
+.review-rating input:checked ~ .star {
+    color: #E0A82E;
+}
